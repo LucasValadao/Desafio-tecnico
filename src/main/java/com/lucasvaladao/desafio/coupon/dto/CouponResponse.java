@@ -1,10 +1,21 @@
 package com.lucasvaladao.desafio.coupon.dto;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.lucasvaladao.desafio.coupon.domain.Coupon;
 import com.lucasvaladao.desafio.coupon.domain.Status;
 
 import java.time.Instant;
 
+@JsonPropertyOrder({
+        "id",
+        "code",
+        "description",
+        "discountValue",
+        "expirationDate",
+        "status",
+        "published",
+        "redeemed"
+})
 public class CouponResponse {
 
     private String id;
@@ -23,9 +34,9 @@ public class CouponResponse {
         response.description = coupon.getDescription();
         response.discountValue = coupon.getDiscountValue();
         response.expirationDate = coupon.getExpirationDate();
+        response.status = coupon.getStatus();
         response.published = coupon.isPublished();
         response.redeemed = coupon.isRedeemed();
-        response.status = coupon.getStatus();
         return response;
     }
 

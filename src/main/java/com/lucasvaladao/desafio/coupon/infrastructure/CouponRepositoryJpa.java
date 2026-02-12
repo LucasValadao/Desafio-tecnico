@@ -3,6 +3,8 @@ package com.lucasvaladao.desafio.coupon.infrastructure;
 import com.lucasvaladao.desafio.coupon.domain.*;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 @Repository
 public class CouponRepositoryJpa implements CouponRepository {
 
@@ -30,5 +32,21 @@ public class CouponRepositoryJpa implements CouponRepository {
         coupon.assignId(saved.getId());
 
         return coupon;
+    }
+
+    @Override
+    public Optional<Coupon> findById(String id) {
+        return jpaRepository.findById(id).map(entity -> {
+            Coupon coupon = new Coupon(
+                    entity.getCode(),
+                    entity.getDescription(),
+                    entity.getDiscountValue(),
+                    entity.getExpirationDate(),
+                    entity.isPublished()
+            );
+
+            coupon.assignId(entity.getId());
+            return coupon;
+        });
     }
 }

@@ -1,6 +1,7 @@
 package com.lucasvaladao.desafio.coupon.controller;
 
 import com.lucasvaladao.desafio.coupon.application.CreateCouponService;
+import com.lucasvaladao.desafio.coupon.application.GetCouponService;
 import com.lucasvaladao.desafio.coupon.dto.CouponResponse;
 import com.lucasvaladao.desafio.coupon.dto.CreateCouponRequest;
 import org.springframework.http.ResponseEntity;
@@ -12,16 +13,24 @@ import jakarta.validation.Valid;
 @RequestMapping("/coupon")
 public class CouponController {
 
-    private final CreateCouponService service;
+    private final CreateCouponService createService;
+    private final GetCouponService getService;
 
-    public CouponController(CreateCouponService service) {
-        this.service = service;
+    public CouponController(CreateCouponService createService, GetCouponService getService) {
+        this.createService = createService;
+        this.getService = getService;
     }
 
     @PostMapping
     public ResponseEntity<CouponResponse> create(@Valid @RequestBody CreateCouponRequest request) {
-        var createdCoupon = service.execute(request);
+        var createdCoupon = createService.execute(request);
 
         return ResponseEntity.ok(CouponResponse.fromDomain(createdCoupon));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<CouponResponse> getById(@PathVariable("id") String id) {
+        var coupon = getService.execute(id);
+        return ResponseEntity.ok(CouponResponse.fromDomain(coupon));
     }
 }
