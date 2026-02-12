@@ -5,7 +5,7 @@ import java.time.Instant;
 public class Coupon {
 
     private String id;
-    private String code;
+    private CouponCode code;
     private String description;
     private double discountValue;
     private Instant expirationDate;
@@ -17,18 +17,21 @@ public class Coupon {
                   String description,
                   double discountValue,
                   Instant expirationDate,
-                  boolean published) {
+                  boolean isPublished) {
 
-        this.code = code;
+        this.code = new CouponCode(code);
         this.description = description;
         this.discountValue = discountValue;
         this.expirationDate = expirationDate;
-        this.published = published;
+        this.published = false;
         this.redeemed = false;
         this.status = Status.INACTIVE;
 
         validate();
-        recalculateStatus();
+
+        if (isPublished) {
+            publish();
+        }
     }
 
     private void validate() {
@@ -41,28 +44,17 @@ public class Coupon {
         }
     }
 
-    public void recalculateStatus() {
-        if (status == Status.DELETED) return;
-
-        if (!published) {
-            status = Status.INACTIVE;
-            return;
-        }
-
+    public void publish() {
         if (expirationDate.isBefore(Instant.now())) {
-            status = Status.INACTIVE;
-            return;
+            throw new IllegalStateException("Um cupom expirado nao pode ser publicado");
         }
 
-        status = Status.ACTIVE;
-    }
-
-    public boolean isExpired() {
-        return expirationDate.isBefore(Instant.now());
+        this.published = true;
+        this.status = Status.ACTIVE;
     }
 
     public String getId() { return id; }
-    public String getCode() { return code; }
+    public String getCode() { return code.getValue(); }
     public String getDescription() { return description; }
     public double getDiscountValue() { return discountValue; }
     public Instant getExpirationDate() { return expirationDate; }
