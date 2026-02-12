@@ -34,6 +34,33 @@ public class Coupon {
         }
     }
 
+    public static Coupon restore(String id,
+                                 String code,
+                                 String description,
+                                 double discountValue,
+                                 Instant expirationDate,
+                                 boolean published,
+                                 boolean redeemed,
+                                 Status status) {
+
+        Coupon coupon = new Coupon();
+
+        coupon.id = id;
+        coupon.code = new CouponCode(code);
+        coupon.description = description;
+        coupon.discountValue = discountValue;
+        coupon.expirationDate = expirationDate;
+        coupon.published = published;
+        coupon.redeemed = redeemed;
+        coupon.status = status;
+
+        return coupon;
+    }
+
+    private Coupon() {
+
+    }
+
     private void validate() {
         if (discountValue < 0.5 ) {
             throw new IllegalArgumentException("O valor do desconto nao pode ser menor que 0,5");
@@ -53,6 +80,20 @@ public class Coupon {
         this.status = Status.ACTIVE;
     }
 
+    public void delete() {
+
+        if (this.status == Status.DELETED) {
+            throw new IllegalStateException("Cupom ja foi deletado");
+        }
+
+        this.status = Status.DELETED;
+    }
+
+    public void assignId(String id) {
+        if (this.id != null) return;
+        this.id = id;
+    }
+
     public String getId() { return id; }
     public String getCode() { return code.getValue(); }
     public String getDescription() { return description; }
@@ -61,10 +102,4 @@ public class Coupon {
     public boolean isPublished() { return published; }
     public boolean isRedeemed() { return redeemed; }
     public Status getStatus() { return status; }
-
-    public void assignId(String id) {
-        if (this.id != null) return;
-        this.id = id;
-    }
-
 }

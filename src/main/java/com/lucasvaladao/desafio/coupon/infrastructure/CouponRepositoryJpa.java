@@ -36,17 +36,16 @@ public class CouponRepositoryJpa implements CouponRepository {
 
     @Override
     public Optional<Coupon> findById(String id) {
-        return jpaRepository.findById(id).map(entity -> {
-            Coupon coupon = new Coupon(
-                    entity.getCode(),
-                    entity.getDescription(),
-                    entity.getDiscountValue(),
-                    entity.getExpirationDate(),
-                    entity.isPublished()
-            );
-
-            coupon.assignId(entity.getId());
-            return coupon;
-        });
+        return jpaRepository.findById(id)
+                .map(entity -> Coupon.restore(
+                        entity.getId(),
+                        entity.getCode(),
+                        entity.getDescription(),
+                        entity.getDiscountValue(),
+                        entity.getExpirationDate(),
+                        entity.isPublished(),
+                        entity.isRedeemed(),
+                        entity.getStatus()
+                ));
     }
 }
