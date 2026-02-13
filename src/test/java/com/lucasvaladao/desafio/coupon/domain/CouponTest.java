@@ -125,4 +125,21 @@ public class CouponTest {
         assertThrows(IllegalStateException.class, coupon::publish);
     }
 
+    @Test
+    void shouldThrowWhenDiscountLowerThanZeroFive() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new Coupon(
+                        "ABC123",
+                        "desc",
+                        0.4,
+                        Instant.now().plusSeconds(3600),
+                        false
+                ));
+    }
+
+    @Test
+    void shouldThrowWhenMoreThanSixCharactersAfterNormalization() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new CouponCode("ABC1234"));
+    }
 }

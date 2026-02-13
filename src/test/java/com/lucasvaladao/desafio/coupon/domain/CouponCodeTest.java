@@ -25,4 +25,10 @@ public class CouponCodeTest {
                 () -> new CouponCode("A-B"));
     }
 
+    @Test
+    void shouldThrowWhenNullOrBlank() {
+        assertThrows(IllegalArgumentException.class,
+                () -> new CouponCode(""));
+    }
+
 }
