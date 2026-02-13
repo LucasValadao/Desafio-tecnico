@@ -83,4 +83,46 @@ public class CouponTest {
                 ));
     }
 
+    @Test
+    void shouldRestoreDeletedCoupon() {
+
+        Coupon coupon = Coupon.restore(
+                "1",
+                "ABC123",
+                "desc",
+                0.5,
+                Instant.now().plusSeconds(3600),
+                true,
+                false,
+                Status.DELETED
+        );
+
+        assertEquals(Status.DELETED, coupon.getStatus());
+    }
+
+    @Test
+    void shouldThrowWhenPublishingExpiredCoupon() {
+
+        Coupon coupon = new Coupon(
+                "ABC123",
+                "desc",
+                0.5,
+                Instant.now().plusSeconds(3600),
+                false
+        );
+
+        coupon = Coupon.restore(
+                coupon.getId(),
+                coupon.getCode(),
+                "desc",
+                0.5,
+                Instant.now().minusSeconds(3600),
+                false,
+                false,
+                Status.INACTIVE
+        );
+
+        assertThrows(IllegalStateException.class, coupon::publish);
+    }
+
 }
