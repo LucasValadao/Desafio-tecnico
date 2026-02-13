@@ -7,12 +7,12 @@ git clone https://github.com/LucasValadao/Desafio-tecnico.git
 cd desafio-tecnico
 ```
 
-## 2 - Montar o container do Docker
+## 2 - Buildar o container do Docker
  ```bash 
  docker compose up --build
  ```
 
-## 3 - Acessar o localhost para testar os endpoints criados.
+## 3 - Acessar o Swagger no localhost para testar os endpoints criados.
 http://localhost:8080/swagger-ui/index.html
 
 ## 4 - Em caso de erro ao montar o container, repetir o passo da montagem.
