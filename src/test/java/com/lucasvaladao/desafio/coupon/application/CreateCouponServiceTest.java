@@ -27,9 +27,6 @@ class CreateCouponServiceTest {
     @InjectMocks
     private CreateCouponService service;
 
-    @InjectMocks
-    private DeleteCouponService deleteService;
-
     @Test
     void shouldCreateAndSaveCoupon() {
 
