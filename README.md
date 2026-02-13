@@ -3,7 +3,7 @@ Desafio técnico referente a vaga de Desenvolvedor(a) Backend Java Pleno
 
 ## 1 - Clonar o projeto
 ```bash 
-git clone [https://github.com/LucasValadao/Desafio-tecnico.git]
+git clone https://github.com/LucasValadao/Desafio-tecnico.git
 cd desafio-tecnico
 ```
 
